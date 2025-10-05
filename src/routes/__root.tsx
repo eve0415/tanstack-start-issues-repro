@@ -1,18 +1,37 @@
 /// <reference types="vite/client" />
-import {
-  HeadContent,
-  Link,
-  Scripts,
-  createRootRoute,
-} from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-import * as React from 'react'
-import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
-import { NotFound } from '~/components/NotFound'
-import appCss from '~/styles/app.css?url'
-import { seo } from '~/utils/seo'
+import { HeadContent, Link, Scripts, createRootRoute } from '@tanstack/react-router';
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
+import * as React from 'react';
+import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary';
+import { NotFound } from '~/components/NotFound';
+import appCss from '~/styles/app.css?url';
+import { seo } from '~/utils/seo';
 
 export const Route = createRootRoute({
+  beforeLoad: ({ serverContext, context }) => {
+    // type serverContext: {fromFetch: boolean;fromRequestMiddleware: boolean;} | undefined
+    // actual: {}
+    // expect: {fromFetch: true, fromRequestMiddleware: true}
+    console.log('[root:beforeLoad] serverContext', serverContext);
+    // type context:  {}
+    // actual: {}
+    // expect: {}
+    console.log('[root:beforeLoad] context', context);
+
+    return {
+      fromBeforeLoad: true,
+    };
+  },
+  loader: ({ serverContext, context }) => {
+    // type serverContext:  {fromFetch: boolean;fromRequestMiddleware: boolean;} | undefined
+    // actual: {}
+    // expect: {fromFetch: true, fromRequestMiddleware: true}
+    console.log('[root:loader] serverContext', serverContext);
+    // type context:  {fromFetch: boolean;fromRequestMiddleware: boolean;} | undefined
+    // actual: {fromBeforeLoad: true}
+    // expect: {fromBeforeLoad: true}
+    console.log('[root:loader] context', context);
+  },
   head: () => ({
     meta: [
       {
@@ -23,8 +42,7 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       ...seo({
-        title:
-          'TanStack Start | Type-Safe, Client-First, Full-Stack React Framework',
+        title: 'TanStack Start | Type-Safe, Client-First, Full-Stack React Framework',
         description: `TanStack Start is a type-safe, client-first, full-stack React framework. `,
       }),
     ],
@@ -60,7 +78,7 @@ export const Route = createRootRoute({
   errorComponent: DefaultCatchBoundary,
   notFoundComponent: () => <NotFound />,
   shellComponent: RootDocument,
-})
+});
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
@@ -127,5 +145,5 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <Scripts />
       </body>
     </html>
-  )
+  );
 }
