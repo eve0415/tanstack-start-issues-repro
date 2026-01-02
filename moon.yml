@@ -1,0 +1,19 @@
+$schema: https://moonrepo.dev/schemas/project.json
+
+toolchain:
+  default: node
+
+language: typescript
+
+tasks:
+  build:
+    command: vite build
+    inputs:
+      - src/**/*
+      - vite.config.ts
+      - wrangler.json
+    outputs:
+      - .wrangler/**
+      - dist/**/*
+    env:
+      NODE_ENV: production

@@ -1,0 +1,18 @@
+$schema: https://moonrepo.dev/schemas/toolchain.json
+
+unstable_javascript:
+  packageManager: pnpm
+  dedupeOnLockfileChange: false
+  syncPackageManagerField: false
+
+unstable_node:
+  syncVersionManagerConfig: nodenv
+
+unstable_pnpm:
+  installArgs:
+    - --frozen-lockfile
+
+typescript:
+  createMissingConfig: false
+  syncProjectReferences: false
+  rootOptionsConfigFileName: tsconfig.json
